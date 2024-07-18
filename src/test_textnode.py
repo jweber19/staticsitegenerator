@@ -1,6 +1,6 @@
 import unittest
 
-
+from text_node_to_html_node import text_node_to_html_node
 from textnode import (
     TextNode,
     text_type_text,
@@ -9,7 +9,6 @@ from textnode import (
     text_type_code,
     text_type_image,
     text_type_link,
-    text_node_to_html_node
 )
 from htmlnode import LeafNode
 from split_nodes_delimiter import split_nodes_delimiter
@@ -46,8 +45,8 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(
             "TextNode(This is a text node, text, https://www.boot.dev)", repr(node)
         )
-    """
-    """
+    
+    
     def test_text_node_to_html_node_text(self):
         text_node = TextNode("This is text", text_type_text)
         html_node = text_node_to_html_node(text_node)
@@ -83,12 +82,12 @@ class TestTextNode(unittest.TestCase):
         html_node = text_node_to_html_node(text_node)
         formatted_html_node = html_node.to_html()
         print(f"{formatted_html_node}")
+    
     """
-
     def test_split_nodes_delimiter(self):
-        node = TextNode("This is a text with a 'code' block word", text_type_text)
+        node = TextNode("This is a text with a `code` block word", text_type_text)
         new_nodes = split_nodes_delimiter([node], "`", text_type_code)
-        print(new_nodes)
+        print(f"new nodes: {new_nodes}")
 
 if __name__ == "__main__":
     unittest.main()
