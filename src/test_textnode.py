@@ -1,5 +1,4 @@
 import unittest
-
 from text_node_to_html_node import text_node_to_html_node
 from textnode import (
     TextNode,
@@ -11,7 +10,7 @@ from textnode import (
     text_type_link,
 )
 from htmlnode import LeafNode
-from split_nodes_delimiter import split_nodes_delimiter
+from inline_markdown import split_nodes_delimiter
 
 class TestTextNode(unittest.TestCase):
     """
