@@ -83,10 +83,6 @@ class TestTextNode(unittest.TestCase):
         print(f"{formatted_html_node}")
     
     """
-    def test_split_nodes_delimiter(self):
-        node = TextNode("This is a text with a `code` block word", text_type_text)
-        new_nodes = split_nodes_delimiter([node], "`", text_type_code)
-        print(f"new nodes: {new_nodes}")
 
 if __name__ == "__main__":
     unittest.main()

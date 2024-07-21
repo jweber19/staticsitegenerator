@@ -12,7 +12,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
     for node in old_nodes:
         if node.text_type == "text": # only split text type nodes
-            parts = node.text.split("`") # splits the text elem in the 1st node 
+            parts = node.text.split(delimiter) # splits the text elem in the 1st node 
 
             if len(parts) % 2 == 0: # checks for odd split count = no delim match
                 raise ValueError(f"Unmatched delimiter '{delimiter}' found in text: {node.text}")
@@ -27,5 +27,5 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                 new_nodes.append(node)
         else:
             new_nodes.append(node) # avoids splitting non_text nodes
-            print(new_nodes)
+
     return new_nodes

@@ -12,17 +12,22 @@ from textnode import (
 from inline_markdown import split_nodes_delimiter
 
 class TestInlineMarkdown(unittest.TestCase):
-    def test_delim_bold(self):
-        node = TextNode("This is bold text", text_type_bold)
-        new_node = split_nodes_delimiter([node], "*", text_type_bold)
-        print(f"Test: Bold - {new_node}")
-        
-    def test_delim_bold_double(self):
-        pass
 
-    def test_delim_bold(self):
-        pass
+    def test_inlinemarkdown(self):
+        node = TextNode("This is a text with a `code` block word", text_type_text)
+        new_nodes = split_nodes_delimiter([node], "`", text_type_code)
+        print(f"`Code` Test: {new_nodes}")
 
+    def test_boldsingle(self):
+        node = TextNode("This is a text with a *bold* word", text_type_text)
+        new_nodes = split_nodes_delimiter([node], "*", text_type_bold)
+        print(f"*Bold* Test: {new_nodes}")
+       
+    def test_bolddouble(self):
+        node = TextNode("This is a text with **two** double **bold** words", text_type_text)
+        new_nodes = split_nodes_delimiter([node], "**", text_type_bold)
+        print(f"*2 Double Bold* Test: {new_nodes}")
+    
 
 if __name__ == "__main__":
     unittest.main()
