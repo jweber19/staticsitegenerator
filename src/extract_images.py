@@ -1,4 +1,9 @@
+import re
 def extract_images(text):
-    image_tuples = (text, "2test")
-    print(f"image tuple type: {type(image_tuples)}")
-    return image_tuples
+    images = re.findall(r"!\[(.*?)\]\((.*?)\)", text)
+    return images
+
+def extract_markdown_links(text):
+    print(f"initial text: {text}")
+    links = re.findall(r"!\[(.*?)\]\((.*?)\)", text)
+    return links
