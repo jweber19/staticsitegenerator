@@ -14,15 +14,17 @@ from textnode import (
 )
 
 class TestExtractImages(unittest.TestCase):
-    
     def test_default(self):
-        node = TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", text_type_text)
-        new_node = extract_images(node.text)
-        print(f"image test: {new_node}")
-    
+        matches = extract_images("This is text with a ![image](https://i.imgur.com/aKaOqIh.gif)")
+        self.assertListEqual([("image", "https://i.imgur.com/aKaOqIh.gif")], matches)
+
 class TestExtractMarkdownLinks(unittest.TestCase):
     def test_default(self):
-        node = TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", text_type_text)
-        new_node = extract_links(node.text)
-        print(f"link test: {new_node}")
-    
+        matches = extract_links("This is text with a [link](https://boot.dev) and [another link](https://blog.boot.dev)")
+        self.assertListEqual(
+            [
+                ("link", "https://boot.dev"),
+                ("another link", "https://blog.boot.dev"),
+            ],
+            matches,
+        )
