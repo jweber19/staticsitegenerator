@@ -28,3 +28,17 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                 split_nodes.append(TextNode(parts[i], text_type))
         new_nodes.extend(split_nodes)
     return new_nodes
+
+def split_nodes_images(old_nodes):
+    pass
+
+def split_nodes_links(old_nodes):
+    new_nodes = []
+    for old_node in old_nodes:
+        split_nodes = []
+        parts = old_node.text.split("[", 1)
+        print(f"parts: {parts}") # debug split result
+        split_nodes.append(parts[0])
+        print(f"split nodes: {split_nodes}") # debug appended portion
+
+    return new_nodes

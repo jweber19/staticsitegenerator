@@ -9,7 +9,11 @@ from textnode import (
     text_type_image,
     text_type_link,
 )
-from inline_markdown import split_nodes_delimiter
+from inline_markdown import (
+    split_nodes_delimiter, 
+    split_nodes_images, 
+    split_nodes_links
+    )
 
 class TestInlineMarkdown(unittest.TestCase):
     """
@@ -88,5 +92,27 @@ class TestInlineMarkdown(unittest.TestCase):
             new_nodes,
         )
     """
+
+    def test_split_node_images(self):
+        pass
+
+    def test_split_node_links(self):
+        node = TextNode(
+            "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", 
+            text_type_text
+        )
+        new_nodes = split_nodes_links([node])
+        print(new_nodes)
+#        self.assertListEqual(
+#            [
+#                TextNode("This is a text with a link ", text_type_text),
+#                TextNode("to boot dev", text_type_link, "https://www.boot.dev"),
+#                TextNode(" and ", text_type_text),
+#                TextNode(
+#                    "to youtube", text_type_link, "https://www.youtube.com/@bootdotdev", text_type_link,
+#                )
+#            ]
+#        )
+    
 if __name__ == "__main__":
     unittest.main()
