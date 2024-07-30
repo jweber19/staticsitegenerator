@@ -37,20 +37,38 @@ def split_nodes_links(old_nodes):
     new_nodes = []
 
     for old_node in old_nodes:
-        
-        if old_node.text_type != text_type_text:
-            new_nodes.append(old_node)
-            print("appending something...not text") # debug
-            continue
-        
         parts = []
-        extractions = extract_links(old_node.text) # result is a list with 2 tuples each with 2 elements representing link/url pair inside.
-        print(f"link extractions: {extractions}") # [('to boot dev', 'https://www.boot.dev'), ('to youtube', 'https://www.youtube.com/@bootdotdev')]
-        print(f"setting up first link/url split parameter...")
-        link_1 = extractions[0][0] # extracts 1st tuple element in 1st list item
-        url_1 = extractions[0][1] # extracts 2nd tuple element in 1st list item
-        print(f"link: {link_1}") # 'to boot dev'
-        print(f"url: {url_1}") # 'https://www.boot.dev'
+        extractions = extract_links(old_node.text)
+        print(f"extractions: {extractions}")
+        # iterate over the number of link-url tuples in extractions, split and append to parts list
+        for i in range(len(extractions)):
+            #print(f"i is: {i}")
+            #print(f"extraction string: [{extractions[i][0]}]({extractions[i][1]})")
+            split_pair = old_node.text.split(f"[{extractions[i][0]}]({extractions[i][1]})", 1)
+            #print(f"split_pair: {split_pair}")
+            for split in split_pair:
+                if split is not "":
+                    parts.append(split)
+                #print(f"append parts list: {parts}")
+        
+        # iterate over length of split parts and inject link url in textnode appended to new nodes alternating text and link by odd and even position.
+        """
+        for i in range(len(parts)):
+            if i % 2 == 0:
+                link = extractions[i][i]
+                url = extractions[i][1]
+
+                new_nodes.append(TextNode(parts[i], text_type_text))
+                new_nodes.append(TextNode(link, text_type_link, url))
+            else:
+                link = extractions[i][i]
+                url = extractions[i][1]
+
+                new_nodes.append(TextNode(parts[i], text_type_text))
+                new_nodes.append(TextNode(link, text_type_link, url))
+        """
+        return None #new_nodes
+        """
         split_1 = old_node.text.split(f"[{link_1}]({url_1})", 1) # splits sentence before and after string including link and url
         parts.append(split_1[0])
         print(f"splitting node '{old_node.text}'") # 'This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)'
@@ -83,36 +101,50 @@ def split_nodes_links(old_nodes):
 
 
 
-        """
+        ======================================================================================================
+        One link and url in one TextNode text string
+        =================================================
         Link/Url Strings
             link_1 = extractions[0][0]
             url_1 = extractions[0][0]
-            link_2 = extractions[0][0]
-            url_2 = extractions[0][0]
         
         Current split string elements
-            split_1 = ['This is text with a link ', ' and [to youtube](https://www.youtube.com/@bootdotdev)']
-            split_2[0] = [' and ', '']
+            - 
         
         Goal
-            set up conditionals to sequentially and accurately create TextNode objects for each, alternating types text or link and injecting link and url objects
+            allow for strings to contain 1 or > 1 links and addresses in a text string.
+            purpose: 
+                - to properly handle link and url extractions
+                - to properly handle textnode creation
 
         Need
             a list containing 1st element of split_1 and split 2
             a way to inject link and url into textnode via iteration through extracted tuple list
 
         Pseudocode Ideas
-            parts = ['This is text with a link ', 'and ']
-            
-            
-            temp_nodes = [] # list to carry TextNodes
+            - 
 
-            for i in range(len(list))
-                if i % 2 == 0:
-                    temp_nodes.append(TextNode(parts[i], text_type_text)
-                    temp_nodes.append(TextNode(link_1, text_type_link, url_1))
-                else:
-                    temp_nodes.append(TextNode(parts[i], text_type_text)
-                    temp_nodes.append(TextNode(link_2, text_type_link, url_2))
- 
+
+        ======================================================================================================
+        Two links and urls in one TextNode text string
+        =================================================
+        Link/Url Strings
+            link_1 = extractions[0][0]
+            url_1 = extractions[0][1]
+            link_2 = extractions[1][0]
+            url_2 = extractions[1][1]]
+        
+        Current split string elements
+            split_1 = ['This is text with a link ', ' and [to youtube](https://www.youtube.com/@bootdotdev)']
+            split_2[0] = [' and ', '']
+        
+        Goal
+            
+
+        Need
+            a list containing 1st element of split_1 and split 2
+            a way to inject link and url into textnode via iteration through extracted tuple list
+
+        Pseudocode Ideas
+            
         """
