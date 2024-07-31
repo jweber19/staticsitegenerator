@@ -42,14 +42,18 @@ def split_nodes_links(old_nodes):
         print(f"extractions: {extractions}")
         # iterate over the number of link-url tuples in extractions, split and append to parts list
         for i in range(len(extractions)):
-            #print(f"i is: {i}")
-            #print(f"extraction string: [{extractions[i][0]}]({extractions[i][1]})")
+            print(f"\nextractions loop {i}\n===================")
+            print(f"extraction string: [{extractions[i][0]}]({extractions[i][1]})")
             split_pair = old_node.text.split(f"[{extractions[i][0]}]({extractions[i][1]})", 1)
-            #print(f"split_pair: {split_pair}")
+            print(f"split_pair: {split_pair}")
             for split in split_pair:
-                if split is not "":
+                if split != "":
                     parts.append(split)
-                #print(f"append parts list: {parts}")
+                    print(f"appending '{split}' to list: {parts}")
+                else:
+                    print("Skipping empty entry\n")
+                    print("all splits appended to parts list.")
+                    input("Press Enter to continue")
         
         # iterate over length of split parts and inject link url in textnode appended to new nodes alternating text and link by odd and even position.
         """
