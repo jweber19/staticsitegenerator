@@ -96,39 +96,38 @@ class TestInlineMarkdown(unittest.TestCase):
     def test_split_node_images(self):
         pass
 
-#    def test_split_node_link(self):
-#        node = TextNode( 
-#            "This is a text with a link [to boot dev](https://www.boot.dev)",
-#            text_type_text
-#        )
-#        new_nodes = split_nodes_links([node])
-#        print(new_nodes)
-#        self.assertListEqual(
-#            [
-#                TextNode("This is a text with a link ", text_type_text),
-#                TextNode("to boot dev", text_type_link, "https://www.boot.dev"),
-#            ],
-#            new_nodes,
-#        )
+    def test_split_node_link(self):
+        node = TextNode( 
+            "This is a text with a link [to boot dev](https://www.boot.dev)",
+            text_type_text
+        )
+        new_nodes = split_nodes_links([node])
+        print(new_nodes)
+        self.assertListEqual(
+            [
+                TextNode("This is a text with a link ", text_type_text),
+                TextNode("to boot dev", text_type_link, "https://www.boot.dev"),
+            ],
+            new_nodes,
+        )
 
     def test_split_node_links(self):
-        node = TextNode(
-            #"This is a text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", 
+        node = TextNode( 
             "This is a text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)",
             text_type_text
         )
         new_nodes = split_nodes_links([node])
         print(new_nodes)
-#        self.assertListEqual(
-#            [
-#                TextNode("This is a text with a link ", text_type_text),
-#                TextNode("to boot dev", text_type_link, "https://www.boot.dev"),
-#                TextNode(" and ", text_type_text),
-#                TextNode("to youtube", text_type_link, "https://www.youtube.com/@bootdotdev"
-#                ),
-#            ],
-#            new_nodes,
-#        )
+        self.assertListEqual(
+            [
+                TextNode("This is a text with a link ", text_type_text),
+                TextNode("to boot dev", text_type_link, "https://www.boot.dev"),
+                TextNode(" and ", text_type_text),
+                TextNode("to youtube", text_type_link, "https://www.youtube.com/@bootdotdev"
+                ),
+            ],
+            new_nodes,
+        )
 
 if __name__ == "__main__":
     unittest.main()
