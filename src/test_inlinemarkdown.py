@@ -92,17 +92,44 @@ class TestInlineMarkdown(unittest.TestCase):
             new_nodes,
         )
     """
+    def test_split_image(self):
+        node = TextNode(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)",
+            text_type_text,
+        )
+        new_nodes = split_nodes_images([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with an ", text_type_text),
+                TextNode("image", text_type_image, "https://i.imgur.com/zjjcJKZ.png"),
+            ],
+            new_nodes,
+        )
 
-    def test_split_node_images(self):
-        pass
+    def test_split_images(self):
+        node = TextNode(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
+            text_type_text,
+        )
+        new_nodes = split_nodes_images([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with an ", text_type_text),
+                TextNode("image", text_type_image, "https://i.imgur.com/zjjcJKZ.png"),
+                TextNode(" and another ", text_type_text),
+                TextNode(
+                    "second image", text_type_image, "https://i.imgur.com/3elNhQu.png"
+                ),
+            ],
+            new_nodes,
+        )
 
-    def test_split_node_link(self):
+    def test_split_link(self):
         node = TextNode( 
             "This is a text with a link [to boot dev](https://www.boot.dev)",
             text_type_text
         )
         new_nodes = split_nodes_links([node])
-        print(new_nodes)
         self.assertListEqual(
             [
                 TextNode("This is a text with a link ", text_type_text),
@@ -111,13 +138,12 @@ class TestInlineMarkdown(unittest.TestCase):
             new_nodes,
         )
 
-    def test_split_node_links(self):
+    def test_split_links(self):
         node = TextNode( 
             "This is a text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)",
             text_type_text
         )
         new_nodes = split_nodes_links([node])
-        print(new_nodes)
         self.assertListEqual(
             [
                 TextNode("This is a text with a link ", text_type_text),
