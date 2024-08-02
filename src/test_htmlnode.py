@@ -1,95 +1,102 @@
 import unittest
 from htmlnode import HTMLNode, LeafNode, ParentNode
 
-from textnode import (
-    TextNode,
-    text_type_text,
-    text_type_bold,
-    text_type_italic,
-    text_type_code,
-    text_type_image,
-    text_type_link,
-)
-"""
+
 class TestHTMLNode(unittest.TestCase):
-    # tests all parameters
-    def test_all_html(self):
-        node = HTMLNode("a", "Click me!", ["p", "b"], {"href": "https://www.google.com"})
-        print(f"props test: {node.props_to_html()}")
-        print(f"repr test: {node.__repr__()}")
-
-    # tests only tag
-    def test_tag(self):
-        node = HTMLNode("tag test", None, None, None)
-        print(f"props tag only test: {node.props_to_html()}")
-        print(f"repr tag only test: {node.__repr__()}")
-    
-    # tests only props
-    def test_props(self):
-        node = HTMLNode(None, None, None, {"href": "https://www.google.com"})
-        print(f"props only test: {node.props_to_html()}")
-        print(f"props only repr test: {node.__repr__()}")
-
-class TestLeafNode(unittest.TestCase):
-    def test_leaf_node(self):
-        try:
-            leaf1 = LeafNode("p", "This is a paragraph.") # tests tag and value
-            leaf2 = LeafNode("a", "Click me!", {"href": "https://www.google.com"}) # tests tag, value, props
-            leaf3 = LeafNode(None, "This is a paragraph.") # tests for value rendered as text
-            leaf4 = LeafNode("a", None, {"href": "https://www.google.com"}) # tests tag and props for no value
-
-            print(leaf1.to_html())
-            print(leaf2.to_html())
-            print(leaf3.to_html())
-            print(leaf4.to_html())
-        except ValueError as ve:
-            print(f"Caught exception: {ve}")
-    
-class TestParentNode(unittest.TestCase):
-    def test_parent_node(self):
-        children_test = [
-            LeafNode("b", "Bold text"),
-            LeafNode(None, "Normal text"),
-            LeafNode("i", "italic text"),
-            LeafNode(None, "Normal text"),
-            ]
-        
-        nested_node_test = ParentNode(
+    def test_to_HTML_props(self):
+        node = HTMLNode(
             "div",
-            [
-                ParentNode(
-                    "p",
-                    [
-                        LeafNode("b", "Bold text"),
-                        LeafNode(None, "Normal text"),
-                        ParentNode(
-                            "span",
-                            [
-                                LeafNode("i", "italic text"),
-                                LeafNode(None, "Normal text inside span"),
-                            ]
-                        ),
-                    ]
-                ),
-                LeafNode("h1", "Header text"),
-            ]
+            "Hello There",
+            None,
+            {"class":"greeting", "href": "https://www.google.com"},
+        )
+        self.assertEqual(
+            node.props_to_html(),
+            ' class="greeting" href="https://www.google.com"',
         )
 
-        no_children_test = ParentNode("div", [],)
+    def test_values(self):
+        node = HTMLNode(
+            "div", 
+            "Hello there"
+        )
+        self.assertEqual(
+            node.tag,
+            "div",
+        )
+        self.assertEqual(
+            node.value,
+            "Hello there",
+        )
+        self.assertEqual(
+            node.children,
+            None,
+        )
+        self.assertEqual(
+            node.props,
+            None,
+        )
 
-        try:
-            parent_node1 = ParentNode("p", children_test)
+    def test_repr(self):
+        node = HTMLNode(
+            "a",
+            "Click me!",
+            None,
+            {"class": "primary"},
+        )
+        self.assertEqual(
+            node.__repr__(),
+            "HTMLNode(a, Click me!, children: None, {'class': 'primary'})",
+        )
 
-            print(parent_node1.to_html())
-            print(nested_node_test.to_html())
-            print(no_children_test.to_html())
-        
-        except ValueError as ve:
-            print(f"Caught exception: {ve}")
-        
-        #print(parent_node1.__repr__())
-        #print(nested_node_test.__repr__())
-        #print(no_children_test.__repr__())
-"""
+    def test_to_html_no_children(self):
+        node = LeafNode("p", "Hello there")
+        self.assertEqual(node.to_html(), "<p>Hello there</p>")
+
+    def test_to_html_no_tag(self):
+        node = LeafNode(None, "Hello there")
+        self.assertEqual(node.to_html(), "Hello there")
+
+    def test_to_html_with_children(self):
+        child_node = LeafNode("span", "child")
+        parent_node = ParentNode("div", [child_node])
+        self.assertEqual(parent_node.to_html(), "<div><span>child</span></div>")
+
+    def test_to_html_with_grandchildren(self):
+        grandchild_node = LeafNode("b", "grandchild")
+        child_node = ParentNode("span", [grandchild_node])
+        parent_node = ParentNode("div", [child_node])
+        self.assertEqual(parent_node.to_html(), "<div><span><b>grandchild</b></span></div>")
+
+    def test_to_html_many_children(self):
+        node = ParentNode(
+            "p",
+            [
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("i", "Italic text"),
+                LeafNode(None, "Normal text"),
+            ],
+        )
+        self.assertEqual(
+            node.to_html(),
+            "<p><b>Bold text</b>Normal text<i>Italic text</i>Normal text</p>",
+        )
+
+    def test_headings(self):
+        node = ParentNode(
+            "h2",
+            [
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("i", "Italic text"),
+                LeafNode(None, "Normal text"),
+            ],
+        )
+        self.assertEqual(
+            node.to_html(),
+            "<h2><b>Bold text</b>Normal text<i>Italic text</i>Normal text</h2>",
+        )
+
 if __name__ == "__main__":
     unittest.main()
