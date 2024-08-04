@@ -7,12 +7,8 @@ from textnode import (
     text_type_code,
     text_type_image,
     text_type_link,
-    text_node_to_html_node,
-    
+    text_node_to_html_node, 
 )
-from htmlnode import LeafNode
-from inline_markdown import split_nodes_delimiter
-
 
 
 class TestTextNode(unittest.TestCase):
@@ -71,8 +67,6 @@ class TestTextToHTMLNode(unittest.TestCase):
             html_node.props,
             {"src":"url/of/image.jpg", "alt": "This is an image"},
         )
-
-
 
 if __name__ == "__main__":
     unittest.main()
