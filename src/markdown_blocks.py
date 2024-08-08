@@ -4,7 +4,7 @@ def markdown_to_blocks(markdown):
 
     parts = markdown.split('\n')
     for part in parts:
-        if part in parts != "":
+        if part != "":
             temp_string += (f"{part}"'\n')
         else:
             if temp_string.strip():
