@@ -13,7 +13,7 @@ from textnode import(
 class TestTextToTextnodes(unittest.TestCase):
     def test_all_types(self):
         text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
-        print(f"\noriginal: {text}\n")
+        #print(f"\noriginal: {text}\n")
         new_nodes = text_to_textnodes(text)
         self.assertListEqual(
             [
