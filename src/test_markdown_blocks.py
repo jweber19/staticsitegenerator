@@ -1,5 +1,5 @@
 import unittest
-from markdown_blocks import markdown_to_blocks
+from markdown_blocks import markdown_to_blocks, block_to_block_type
 
 class TestMarkdownBlocks(unittest.TestCase):
     def test_markdown_simple(self):
@@ -45,3 +45,15 @@ This is the same paragraph on a new line
                 "* This is a list\n* with items",
             ],
         )
+
+    def test_blocktype_heading(self):
+        md = "# This Is a Heading"
+        block_type = block_to_block_type(md)
+        #print(block_type)
+        self.assertEqual(block_type, "heading")
+    
+    def test_blocktype_paragraph(self):
+        md = "This is **bolded** paragraph"
+        block_type = block_to_block_type(md)
+        #print(block_type)
+        self.assertEqual(block_type, "paragraph")
