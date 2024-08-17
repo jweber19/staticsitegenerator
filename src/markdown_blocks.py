@@ -14,16 +14,22 @@ def markdown_to_blocks(markdown):
     return blocks
 
 def block_to_block_type(markdown):
-    if markdown == re.match(r"(#+)('')(.*?)", markdown):
+    if re.match(r"^#{1,6}\s(?! )(.*)", markdown):
         return "heading"
-    #if markdown == x:
-        #return "code"
-    #if markdown == x:
-        #return "quote"
-    #if markdown == x:
-        #return "unordered_list"
-    #if markdown == x:
-        #return "ordered_list"
+    if re.match(r"^```(.*)```$", markdown):
+        return "code"
+    if not re.findall(r"^(?!>).", markdown, flags=re.MULTILINE):
+        return "quote"
+    if not re.findall(r"^(?![-*] ).", markdown, flags=re.MULTILINE):
+        return "unordered list"
+    if markdown.startswith("1. "):
+        lines = markdown.split("\n")
+        i = 1
+        for line in lines:
+            if not line.startswith(f"{i}. "):
+                return "paragraph"
+            i += 1
+        return "ordered list"
     else:
         return "paragraph"
     
