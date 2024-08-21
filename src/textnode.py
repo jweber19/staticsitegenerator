@@ -1,5 +1,8 @@
+# a textnode is an intermediate representation of Markdown inline text before it gets processed into HTML form.
+# the function below will convert a textnode into a sub-class of an html node: a leaf node.
 from htmlnode import LeafNode
 
+# these are the 6 types of inline markup we will process
 text_type_text = "text"
 text_type_bold = "bold"
 text_type_italic = "italic"
@@ -7,7 +10,7 @@ text_type_code = "code"
 text_type_link = "link"
 text_type_image = "image"
 
-class TextNode:
+class TextNode: 
     def __init__(self, text, text_type, url=None):
         self.text = text
         self.text_type = text_type
@@ -23,7 +26,7 @@ class TextNode:
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type}, {self.url})"
 
-
+# convert from textnode to a leafnode
 def text_node_to_html_node(text_node):
     if text_node.text_type == text_type_text:
         return LeafNode(None, text_node.text)

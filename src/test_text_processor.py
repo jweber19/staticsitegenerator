@@ -11,9 +11,10 @@ from textnode import(
 )
 
 class TestTextToTextnodes(unittest.TestCase):
+    # - uses split functions from inline_markdown.py to convert an md string containing varied inline text content 
+    # into a list of textnodes separated by text types in order.
     def test_all_types(self):
         text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
-        #print(f"\noriginal: {text}\n")
         new_nodes = text_to_textnodes(text)
         self.assertListEqual(
             [

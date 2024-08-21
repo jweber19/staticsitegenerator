@@ -1,3 +1,10 @@
+"""
+    Converts raw markdown strings into lists of TextNode objects. 
+    This is known as a "markdown parser". Normally, parsing nested markdown strings is supported but this project 
+    will focus on single level nesting for simplicity's sake.
+
+"""
+
 import re
 
 from textnode import (
@@ -10,7 +17,8 @@ from textnode import (
     text_type_link,
 )
 
-
+# Takes a list of "old nodes", a delimiter, and a text type. 
+# Returns a new list of nodes, where "text" types are split into multiple nodes based on the syntax. 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
     for old_node in old_nodes:
@@ -33,6 +41,18 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return new_nodes
 
 
+# takes raw md text and returns a list of tuples. the tuples contain the alt text and urls of links/images.
+def extract_markdown_images(text):
+    images = re.findall(r"!\[(.*?)\]\((.*?)\)", text)
+    return images
+
+# see above
+def extract_markdown_links(text):
+    links = re.findall(r"\[(.*?)\]\((.*?)\)", text)
+    return links
+
+
+# these functions split image and link textnode objects similarly to the delim one but makes use of the extraction functions above.
 def split_nodes_image(old_nodes):
     new_nodes = []
     for old_node in old_nodes:
@@ -79,13 +99,3 @@ def split_nodes_link(old_nodes):
         if original_text != "":
             new_nodes.append(TextNode(original_text, text_type_text))
     return new_nodes
-
-
-def extract_markdown_images(text):
-    images = re.findall(r"!\[(.*?)\]\((.*?)\)", text)
-    return images
-
-
-def extract_markdown_links(text):
-    links = re.findall(r"\[(.*?)\]\((.*?)\)", text)
-    return links
