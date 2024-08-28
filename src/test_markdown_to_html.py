@@ -9,6 +9,8 @@ class TestMarkdownToHTML(unittest.TestCase):
 ## This is also a heading
 ###### This is the last heading
 
+###### This is a heading in it's own block
+
 - Line 1 of an unordered list
 - Line 2 of an unordered list
 
@@ -19,5 +21,5 @@ This is **bolded** paragraph,
 This is another paragraph with *italic* text and `code` here\nThis is the same paragraph on a new line
 
 >This Is A\n>Multi Line\n>Quote
-        """
+"""
         markdown_to_html_node(md)
