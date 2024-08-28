@@ -21,17 +21,17 @@ block_type_ordered_list = "ordered list"
 block_type_quote = "quote"
 
 
-def block_to_htmlnode(block_type):
+def block_to_htmlnode(block_type, block):
     if block_type == block_type_paragraph:
-        pass
+        print(f"block type paragraph\n{block}\n")
     if block_type == block_type_heading:
-        pass
+        print(f"block type heading\n{block}\n")
     if block_type == block_type_unordered_list:
-        pass
+        print(f"block type unordered list\n{block}\n")
     if block_type == block_type_ordered_list:
-        pass
+        print(f"block type ordered list\n{block}\n")
     if block_type == block_type_quote:
-        pass
+        print(f"block type quote\n{block}")
 
 
 def markdown_to_html_node(markdown):
@@ -39,4 +39,4 @@ def markdown_to_html_node(markdown):
     print("\n")
     for block in blocks:
         block_type = block_to_block_type(block)
-        new_node = block_to_htmlnode(block_type)
+        new_node = block_to_htmlnode(block_type, block)
