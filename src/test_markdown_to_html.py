@@ -3,23 +3,18 @@ from markdown_blocks import markdown_to_blocks, block_to_block_type
 from markdown_to_html import markdown_to_html_node
 
 class TestMarkdownToHTML(unittest.TestCase):
-    def test_markdown_block_type(self):
+    def test_markdown_block_to_html_node(self):
         md = """
-# This is a heading    
-## This is also a heading
-###### This is the last heading
+# GitHub
 
-###### This is a heading in it's own block
+It's a **great** website where you can effectively manage *version control*
 
-- Line 1 of an unordered list
-- Line 2 of an unordered list
+## Also
 
-1. Line 1 of an ordered list
-2. Line 2 of an ordered list
+- It's easy to use
+- Super popular
 
-This is **bolded** paragraph,
-This is another paragraph with *italic* text and `code` here\nThis is the same paragraph on a new line
-
->This Is A\n>Multi Line\n>Quote
+[Check out my GitHub page](https://github.com/jweber19)
 """
         markdown_to_html_node(md)
+
