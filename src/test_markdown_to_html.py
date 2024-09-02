@@ -10,11 +10,11 @@ class TestMarkdownToHTML(unittest.TestCase):
 It's a **great** website where you can effectively manage *version control*
 
 ## Also
-
-- It's easy to use
-- Super popular
-
-[Check out my GitHub page](https://github.com/jweber19)
 """
-        markdown_to_html_node(md)
-
+        node = markdown_to_html_node(md)
+"""
+        self.assertEqual(
+            node.to_html(),
+            "<p>It's a <b>great</b> website where you can effectively manage <i>version control</i></p>",
+        )
+"""
