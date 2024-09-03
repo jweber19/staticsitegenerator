@@ -27,8 +27,13 @@ block_type_image = "image"
 
 def text_to_children(text):
     children = [] # set up list to hold leafnodes
-    textnodes = text_to_textnodes(text) # convert from text to textnodes
+    textnodes = text_to_textnodes(text) # convert from text to textnode
     for node in textnodes:  # loop over each textnodes list
+        print(f"\n{node.text}")
+        input("press enter")
+        
+        # develop a block to text function and use here
+        
         leafnode = text_node_to_html_node(node) # convert each textnode to an html leafnode
         children.append(leafnode) # append leafnode to child list
     return children
@@ -60,7 +65,8 @@ def markdown_to_html_node(markdown):
     for block in blocks: # iterate over block list
         block_type = block_to_block_type(block) # get block type from markdown_blocks
         htmlnode = block_to_textnodes(block_type, block) # convert blocks using if switches to list of textnodes (see above function)
-         
+        """ 
         if htmlnode is not None:   # skip empty blocks, temporary: change once all if switches are complete
            print (htmlnode.to_html()) # convert the node to html and print to screen
            # return htmlnode # return the node to be compared for accuracy
+        """
