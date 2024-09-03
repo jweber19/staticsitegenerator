@@ -79,6 +79,7 @@ def markdown_to_html_node(markdown):
     print('\n')
     for block in blocks: # iterate over block list
         block_type = block_to_block_type(block) # get block type from markdown_blocks
+        
         htmlnode = block_to_textnodes(block_type, block) # convert blocks using if switches to list of textnodes (see above function)
         
         if htmlnode is not None:   # skip empty blocks, temporary: change once all if switches are complete

@@ -6,9 +6,7 @@ class TestMarkdownToHTML(unittest.TestCase):
     def test_markdown_block_to_html_node(self):
         md = """
 # GitHub
-
 It's a **great** website where you can effectively manage *version control*
-
 ## Also
 """
         node = markdown_to_html_node(md)
