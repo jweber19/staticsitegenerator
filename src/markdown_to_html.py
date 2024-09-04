@@ -23,17 +23,41 @@ block_type_unordered_list = "unordered list"
 block_type_ordered_list = "ordered list"
 block_type_quote = "quote"
 block_type_image = "image"
+block_type_code = "code"
 
 # create delimiters
 heading = "#"
+unordered_list = "-"
+unordered_list_2 = "*"
+ordered_list = "1234567890."
+quote = ">"
+code = "```"
 
 
 
 # strip markdown from blocks via delimiter
 def md_strip(block, delimiter):
-    block = block.strip(delimiter) # strip md
-    new_block = block.strip() # strip remaining whitespace
-    return new_block
+    if delimiter == ordered_list:
+        new_block_line = ""
+        stripped_block = ""
+        split_blocks = block.split('\n')
+        for block in split_blocks:
+            new_block_line = block.strip(delimiter) # strip md by number and period
+            stripped_block += (f"{new_block_line.strip()}\n")
+        return stripped_block
+    else:
+        if '\n' in block:
+            new_block = ""
+            blocks = block.split("\n")
+            for line in blocks:
+                temp_string = ""
+                temp_string += (line.strip(delimiter))
+                new_block += (f"{temp_string.strip()}\n")
+            return new_block
+        else:
+            block = block.strip(delimiter) # strip md
+            new_block = block.strip() # strip remaining whitespace
+            return new_block
 
 
 
@@ -62,16 +86,32 @@ def block_to_textnodes(block_type, block):
         children = text_to_children(stripped_block)
         parentnode = ParentNode(f"h{heading_count}", children)
         return parentnode
-    """
+    
     if block_type == block_type_unordered_list: # process unordered list blocks
-        pass
+        stripped_block = md_strip(block, unordered_list) # remove md from heading text
+        stripped_block = md_strip(block, unordered_list_2) # remove md from heading text
+        children = text_to_children(stripped_block)
+        parentnode = ParentNode("ul", children) # set up parentnode object and inject child list
+        return parentnode
+    
     if block_type == block_type_ordered_list: # process ordered list blocks
-        pass
+        stripped_block = md_strip(block, ordered_list) # remove md from heading text
+        children = text_to_children(stripped_block)
+        parentnode = ParentNode("ol", children) # set up parentnode object and inject child list
+        return parentnode
+    
     if block_type == block_type_quote: # process quote blocks
-        pass
+        stripped_block = md_strip(block, quote) # remove md from heading text
+        children = text_to_children(stripped_block)
+        parentnode = ParentNode("blockquote", children) # set up parentnode object and inject child list
+        return parentnode
+    
     if block_type == block_type_code: # process code blocks
-        pass
-    """
+        stripped_block = md_strip(block, code) # remove md from heading text
+        children = text_to_children(stripped_block)
+        parentnode = ParentNode("code", children) # set up parentnode object and inject child list
+        return parentnode
+    
 
 # main function behavior
 def markdown_to_html_node(markdown):
