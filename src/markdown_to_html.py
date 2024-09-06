@@ -25,7 +25,7 @@ block_type_quote = "quote"
 block_type_image = "image"
 block_type_code = "code"
 
-# create delimiters
+# create block type delimiters
 heading = "#"
 unordered_list = "-*"
 ordered_list = "1234567890."
@@ -38,6 +38,8 @@ def get_delimiter(block_type):
         return heading
     if block_type == block_type_unordered_list:
         return unordered_list
+    if block_type == block_type_ordered_list:
+        return ordered_list
     if block_type == block_type_quote:
         return quote
     if block_type == block_type_code:
@@ -53,16 +55,16 @@ def md_strip(block, block_type):
         split_blocks = block.split('\n')
         for block in split_blocks:
             new_block_line = block.strip(get_delimiter(block_type)) # strip md by number and period
-            stripped_block += (f"{new_block_line.strip()}\n")
+            stripped_block += (f"{new_block_line.strip()}") # missing newline reinsertion
         return stripped_block
     else:
-        if '\n' in block:
+        if '\n' in block: # check this one because it was occuring on single line blocks
             new_block = ""
             blocks = block.split("\n")
             for line in blocks:
                 temp_string = ""
                 temp_string += (line.strip(get_delimiter(block_type)))
-                new_block += (f"{temp_string.strip()}\n")
+                new_block += (f"{temp_string.strip()}")
             return new_block
         else:
             block = block.strip(get_delimiter(block_type)) # strip md
