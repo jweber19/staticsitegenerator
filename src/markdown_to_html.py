@@ -27,8 +27,8 @@ block_type_code = "code"
 
 # create block type delimiters
 heading = "#"
-unordered_list = "-*"
-ordered_list = "1234567890."
+unordered_list = "-* "
+ordered_list = "1234567890. "
 quote = ">"
 code = "```"
 
@@ -55,7 +55,8 @@ def md_strip(block, block_type):
         split_blocks = block.split('\n')
         for block in split_blocks:
             new_block_line = block.strip(get_delimiter(block_type)) # strip md by number and period
-            stripped_block += (f"{new_block_line.strip()}") # missing newline reinsertion
+            if new_block_line.strip():
+                stripped_block += (f"{new_block_line}\n") # missing newline reinsertion
         return stripped_block
     else:
         if '\n' in block: # check this one because it was occuring on single line blocks
@@ -64,7 +65,8 @@ def md_strip(block, block_type):
             for line in blocks:
                 temp_string = ""
                 temp_string += (line.strip(get_delimiter(block_type)))
-                new_block += (f"{temp_string.strip()}")
+                if temp_string.strip():
+                    new_block += (f"{temp_string}\n")
             return new_block
         else:
             block = block.strip(get_delimiter(block_type)) # strip md
@@ -94,32 +96,32 @@ def block_to_textnodes(block_type, block):
     
     if block_type == block_type_heading: # process heading blocks
         heading_count = block.count("#") # get heading count
-        stripped_block = md_strip(block, heading) # remove md from heading text
-        children = text_to_children(stripped_block)
+        #stripped_block = md_strip(block, heading) # remove md from heading text
+        children = text_to_children(block)
         parentnode = ParentNode(f"h{heading_count}", children)
         return parentnode
     
     if block_type == block_type_unordered_list: # process unordered list blocks
-        stripped_block = md_strip(block, unordered_list) # remove md from heading text
-        children = text_to_children(stripped_block)
+        #stripped_block = md_strip(block, unordered_list) # remove md from heading text
+        children = text_to_children(block)
         parentnode = ParentNode("ul", children) # set up parentnode object and inject child list
         return parentnode
     
     if block_type == block_type_ordered_list: # process ordered list blocks
-        stripped_block = md_strip(block, ordered_list) # remove md from heading text
-        children = text_to_children(stripped_block)
+        #stripped_block = md_strip(block, ordered_list) # remove md from heading text
+        children = text_to_children(block)
         parentnode = ParentNode("ol", children) # set up parentnode object and inject child list
         return parentnode
     
     if block_type == block_type_quote: # process quote blocks
-        stripped_block = md_strip(block, quote) # remove md from heading text
-        children = text_to_children(stripped_block)
+        #stripped_block = md_strip(block, quote) # remove md from heading text
+        children = text_to_children(block)
         parentnode = ParentNode("blockquote", children) # set up parentnode object and inject child list
         return parentnode
     
     if block_type == block_type_code: # process code blocks
-        stripped_block = md_strip(block, code) # remove md from heading text
-        children = text_to_children(stripped_block)
+        #stripped_block = md_strip(block, code) # remove md from heading text
+        children = text_to_children(block)
         parentnode = ParentNode("code", children) # set up parentnode object and inject child list
         return parentnode
     
@@ -128,14 +130,15 @@ def block_to_textnodes(block_type, block):
 def markdown_to_html_node(markdown):
     blocks = markdown_to_blocks(markdown) # separate md string block into \n separated blocks
 
-    for block in blocks: # iterate over block list
+    for block in blocks:
         block_type = block_to_block_type(block) # get block type from markdown_blocks
         
-        block = md_strip(block, block_type) # strip block of remaining markdown (*seems like a problem to strip md before processing inline)
+        block = md_strip(block, block_type)
 
-        textnode = text_to_textnodes(block)
+        #textnode = text_to_textnodes(block)
+        
 
-        htmlnode = block_to_textnodes(block_type, block) # convert blocks using if switches to list of textnodes (see above function)
+        htmlnode = block_to_textnodes(block_type, block)
         
         if htmlnode is not None:   # skip empty blocks, temporary: change once all if switches are complete
            print (htmlnode.to_html()) # convert the node to html and print to screen

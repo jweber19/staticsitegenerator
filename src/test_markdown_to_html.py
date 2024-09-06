@@ -7,7 +7,7 @@ class TestMarkdownToHTML(unittest.TestCase):
         md = """
 # GitHub
 
-It's a **great** website where you can effectively manage *version control.* Check out the website here [github.com](https://github.com/)
+It's a **great** website where you can effectively manage *version control*. Check out the website here [github.com](https://github.com/)
 ![bootdev](https://www.boot.dev/img/bootdev-logo-full-small.webp)
 
 ## Also
