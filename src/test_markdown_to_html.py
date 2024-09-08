@@ -1,10 +1,27 @@
 import unittest
-from markdown_blocks import markdown_to_blocks, block_to_block_type
 from markdown_to_html import markdown_to_html_node
 
 class TestMarkdownToHTML(unittest.TestCase):
-    def test_markdown_block_to_html_node(self):
+    def test_markdown_to_html_node_heading(self): # 3 cases: generic, inline md, max heading length
         md = """
+# Heading 1
+### Heading 3 with *emphasis*
+###### Heading 6
+"""
+        node = markdown_to_html_node(md)
+        self.assertEqual(
+            node.to_html(),
+            "<h1>Heading 1</h1>",
+            "<h3>Heading 3 with <b>emphasis</b></h3>",
+            "<h6>Heading 6</h6>",
+        )
+
+
+
+
+"""
+    def test_markdown_block_to_html_node(self):
+        md =
 # GitHub
 
 It's a **great** website where you can effectively manage *version control*. Check out the website here [github.com](https://github.com/)
@@ -31,11 +48,11 @@ exit```
 1. Buy eggs
 2. Drink Milk
 3. Eat Bacon
-"""
+
         node = markdown_to_html_node(md)
-"""
         self.assertEqual(
             node.to_html(),
             "<p>It's a <b>great</b> website where you can effectively manage <i>version control</i></p>",
         )
+
 """

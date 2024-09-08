@@ -1,3 +1,5 @@
+import sys
+
 # import class objects and other functions
 from htmlnode import(
     HTMLNode,
@@ -32,23 +34,12 @@ ordered_list = "1234567890. "
 quote = ">"
 code = "```"
 
-# get delimiter
-def get_delimiter(block_type):
-    if block_type == block_type_heading:
-        return heading
-    if block_type == block_type_unordered_list:
-        return unordered_list
-    if block_type == block_type_ordered_list:
-        return ordered_list
-    if block_type == block_type_quote:
-        return quote
-    if block_type == block_type_code:
-        return code
-    else:
-        return ""
 
+"""
 # strip markdown from blocks via delimiter
-def md_strip(block, block_type):
+def remove_markdown(block, block_type):
+
+    
     if block_type == block_type_ordered_list:
         new_block_line = ""
         stripped_block = ""
@@ -72,53 +63,63 @@ def md_strip(block, block_type):
             block = block.strip(get_delimiter(block_type)) # strip md
             new_block = block.strip() # strip remaining whitespace
             return new_block
+"""
+# process heading blocks
+def process_heading(block):
+    heading_count = len(block) - len(block.lstrip("#")) # get accurate heading '#' count starting from left side
+    print(f"\nheading_count: {heading_count}")
+    print(f"\nblock: {block}")
+    block_text = block.strip("#")
+    print(f"block_text: {block}")
+    block_text = block_text.strip()
+    print(f"block_text.strip: {block_text}")
+    response = input("program paused...")
+    return None
+    # create html node
+    # return html node
 
+# process unordered lists
+def process_unordered_list(block):
+    pass
 
-def block_to_lines(block):
-    if '\n' in block:
-        line = block.split('\n')
+# process ordered lists
+def process_ordered_list(block):
+    pass
 
-        for line in block:
-            block_lines = block_lines.append(line)
-        return block_lines
-    
+# process quote blocks
+def process_quote(block):
+    pass
+
+# process code blocks
+def process_code(block):
+    pass
+
+# call appropriate block processor for each type
+def block_processor(block, block_type):
+    if block_type == block_type_heading:
+        process_heading(block)
+    if block_type == block_type_unordered_list:
+        process_unordered_list(block)
+    if block_type == block_type_ordered_list:
+        process_ordered_list(block)
+    if block_type == block_type_quote:
+        process_quote(block)
+    if block_type == block_type_code:
+        process_code(block)
     else:
-        return block
+        raise ValueError("Block type processing error")
 
 
-def block_to_text(block, block_type):
-
-
-# return a list of child leafnodes
-def text_to_children(text):
-    children = [] # set up list to hold leafnodes
-    textnodes = text_to_textnodes(text) # convert from text to textnode
-    for node in textnodes:
-        leafnode = text_node_to_html_node(node) # convert each textnode to an html leafnode
-        children.append(leafnode)
-    return children
-
-
-
-# filter block types and process accordingly
-def block_to_textnodes(block, block_type):
-    children = text_to_children(block) # convert any block inline md to child nodes
-    parentnode = ParentNode("p", children) # set up parentnode object and inject child list
-    return parentnode
-    
-
-# main function behavior
+# main function
 def markdown_to_html_node(markdown):
-    blocks = markdown_to_blocks(markdown) # separate md string block into \n separated blocks
+    
+    blocks = markdown_to_blocks(markdown)
 
     for block in blocks:
-        block_type = block_to_block_type(block) # get block type
-        block_lines = block_to_lines(block) # separate blocks into lines
-        textnodes = block_to_textnode(block_lines, block_type)
+        block_type = block_to_block_type(block)
+        html_node = block_processor(block, block_type)
+        html_nodes = html_nodes.append(html_node)
+    
+    root_node = HTMLNode("div", html_nodes)
 
-        htmlnode = block_to_textnodes(block, block_type)
-        
-        if htmlnode is not None:   # skip empty blocks, temporary: change once all if switches are complete
-           print (htmlnode.to_html()) # convert the node to html and print to screen
-           # return htmlnode # return the node to be compared for accuracy
-        
+    print(root_node.to_html())
