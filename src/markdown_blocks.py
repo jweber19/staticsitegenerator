@@ -7,16 +7,28 @@ def markdown_to_blocks(markdown):
     temp_string = ""
     blocks = []
 
-    parts = markdown.split('\n')
-    for part in parts:
-        if part != "":
-            temp_string += (f"{part}"'\n')
+    lines = markdown.split('\n') # split markdown into lines
+
+    for line in lines:
+        if (block_to_block_type(line)) == "heading":
+            blocks.append(line.strip())
+        elif line != "":
+            temp_string += (f"{line}"'\n') # assumes properly written markdown: no two differing block types on sequential lines w/o a blank one in-between
         else:
             if temp_string.strip():
                 blocks.append(temp_string.strip())
                 temp_string = ""
     return blocks
 
+    """ 
+        if line != "":
+            temp_string += (f"{line}"'\n')
+        else:
+            if temp_string.strip():
+                blocks.append(temp_string.strip())
+                temp_string = ""
+    return blocks
+    """
 # takes a single block of markdown text as input and returns a string representing the type of block it is.
 # block types include: paragraph, heading, code, quote, unordered_list, ordered_list
 def block_to_block_type(markdown):

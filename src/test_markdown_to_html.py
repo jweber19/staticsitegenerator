@@ -7,15 +7,21 @@ class TestMarkdownToHTML(unittest.TestCase):
 # Heading 1
 ### Heading 3 with *emphasis*
 ###### Heading 6
+
+* Item 1 is **bold**
+* Item 2 is *italic*
+* Item 3 is `code`
 """
+
         node = markdown_to_html_node(md)
+"""
         self.assertEqual(
             node.to_html(),
             "<h1>Heading 1</h1>",
             "<h3>Heading 3 with <b>emphasis</b></h3>",
             "<h6>Heading 6</h6>",
         )
-
+"""
 
 
 
