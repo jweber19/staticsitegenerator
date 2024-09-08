@@ -59,7 +59,7 @@ def md_strip(block, block_type):
                 stripped_block += (f"{new_block_line}\n") # missing newline reinsertion
         return stripped_block
     else:
-        if '\n' in block: # check this one because it was occuring on single line blocks
+        if '\n' in block:
             new_block = ""
             blocks = block.split("\n")
             for line in blocks:
@@ -74,6 +74,20 @@ def md_strip(block, block_type):
             return new_block
 
 
+def block_to_lines(block):
+    if '\n' in block:
+        line = block.split('\n')
+
+        for line in block:
+            block_lines = block_lines.append(line)
+        return block_lines
+    
+    else:
+        return block
+
+
+def block_to_text(block, block_type):
+
 
 # return a list of child leafnodes
 def text_to_children(text):
@@ -87,43 +101,10 @@ def text_to_children(text):
 
 
 # filter block types and process accordingly
-def block_to_textnodes(block_type, block):
-
-    if block_type == block_type_paragraph: # process paragraph blocks
-        children = text_to_children(block) # convert any block inline md to child nodes
-        parentnode = ParentNode("p", children) # set up parentnode object and inject child list
-        return parentnode
-    
-    if block_type == block_type_heading: # process heading blocks
-        heading_count = block.count("#") # get heading count
-        #stripped_block = md_strip(block, heading) # remove md from heading text
-        children = text_to_children(block)
-        parentnode = ParentNode(f"h{heading_count}", children)
-        return parentnode
-    
-    if block_type == block_type_unordered_list: # process unordered list blocks
-        #stripped_block = md_strip(block, unordered_list) # remove md from heading text
-        children = text_to_children(block)
-        parentnode = ParentNode("ul", children) # set up parentnode object and inject child list
-        return parentnode
-    
-    if block_type == block_type_ordered_list: # process ordered list blocks
-        #stripped_block = md_strip(block, ordered_list) # remove md from heading text
-        children = text_to_children(block)
-        parentnode = ParentNode("ol", children) # set up parentnode object and inject child list
-        return parentnode
-    
-    if block_type == block_type_quote: # process quote blocks
-        #stripped_block = md_strip(block, quote) # remove md from heading text
-        children = text_to_children(block)
-        parentnode = ParentNode("blockquote", children) # set up parentnode object and inject child list
-        return parentnode
-    
-    if block_type == block_type_code: # process code blocks
-        #stripped_block = md_strip(block, code) # remove md from heading text
-        children = text_to_children(block)
-        parentnode = ParentNode("code", children) # set up parentnode object and inject child list
-        return parentnode
+def block_to_textnodes(block, block_type):
+    children = text_to_children(block) # convert any block inline md to child nodes
+    parentnode = ParentNode("p", children) # set up parentnode object and inject child list
+    return parentnode
     
 
 # main function behavior
@@ -131,14 +112,11 @@ def markdown_to_html_node(markdown):
     blocks = markdown_to_blocks(markdown) # separate md string block into \n separated blocks
 
     for block in blocks:
-        block_type = block_to_block_type(block) # get block type from markdown_blocks
-        
-        block = md_strip(block, block_type)
+        block_type = block_to_block_type(block) # get block type
+        block_lines = block_to_lines(block) # separate blocks into lines
+        textnodes = block_to_textnode(block_lines, block_type)
 
-        #textnode = text_to_textnodes(block)
-        
-
-        htmlnode = block_to_textnodes(block_type, block)
+        htmlnode = block_to_textnodes(block, block_type)
         
         if htmlnode is not None:   # skip empty blocks, temporary: change once all if switches are complete
            print (htmlnode.to_html()) # convert the node to html and print to screen

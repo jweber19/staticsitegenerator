@@ -16,7 +16,9 @@ It's a **great** website where you can effectively manage *version control*. Che
 
 ### Next
 
-```print("Hello World!)```
+```print("Hello World!)
+go to line 40
+exit```
 
 #### Forthrightly
 
