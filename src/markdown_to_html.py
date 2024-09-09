@@ -43,8 +43,6 @@ def process_heading(block):
 
 # process unordered lists
 def process_unordered_list(block):
-    html_nodes = []
-
     lines = block.split("\n")
     items = []
     current_item = []
@@ -58,13 +56,30 @@ def process_unordered_list(block):
     if current_item:
         items.append('\n'.join(current_item))
 
+    
+    li_nodes = [] # object must be reset each time loop is run
+    ul_children = [] # object must be reset each time loop is run
+
+    # loop over each list line <li>
     for item in items:
-        item_text = item.lstrip("-* ")
-        item_text = item_text.strip()
-        textnodes = text_to_textnodes(item_text)
-        #print(f"\ntextnode: {textnodes}")
-    #print(f"\nTextnodes Type: {type(textnodes)}")
-    return ParentNode("ul", html_nodes)
+        
+
+        item = item.lstrip("-* ")
+        item = item.strip()
+        textnodes = text_to_textnodes(item) # get text type
+        
+        # loop over any inline md
+        inline_nodes = [] # object must be emptied upon next loop
+        for node in textnodes: 
+            inline_nodes.append(text_node_to_html_node(node)) # convert to and append each inline md leafnode to a list
+        
+        # step out of inline wrapping and back into <li> work                
+        ul_children = ParentNode("li", inline_nodes) # inject inline nodes into <li> container
+        li_nodes.append(ul_children) # create list to hold <li> nodes
+    
+    ul_node = ParentNode("ul", li_nodes) # inject li nodes into ul node parent container
+    
+    return ul_node
 
 # process ordered lists
 def process_ordered_list(block):
@@ -80,7 +95,30 @@ def process_code(block):
 
 # process paragraph blocks
 def process_paragraph(block):
-    pass
+    """
+    lines = block.split("\n")
+    items = []
+    current_item = []
+    for line in lines:
+        if current_item: # empty list = "falsy", non-empty list = "truthy".
+            items.append('\n'.join(current_item))
+            current_item = []
+        current_item.append(line)
+    if current_item:
+        items.append('\n'.join(current_item))
+
+    p_children = [] # object must be reset each time loop is run
+    # loop over each p line
+    for item in items:
+        item = item.strip()
+        textnodes = text_to_textnodes(item) # get text type
+        
+        # loop over any inline md
+        inline_nodes = [] # object must be emptied upon next loop
+        for node in textnodes: 
+            inline_nodes.append(text_node_to_html_node(node)) # convert to and append each inline md leafnode to a list
+    """                       
+    return None #ParentNode("p", inline_nodes) # inject inline nodes into <li> container
 
 # call appropriate block processor for each type
 def block_processor(block, block_type):
@@ -118,5 +156,5 @@ def markdown_to_html_node(markdown):
         html_nodes.append(html_node)
     
     root_node = ParentNode("div", html_nodes)
-
+    #print(html_nodes)
     print(f"\n{root_node.to_html()}")
