@@ -40,14 +40,17 @@ def block_to_block_type(markdown):
         return "quote"
     if not re.findall(r"^(?![-*] ).", markdown, flags=re.MULTILINE): # Unordered List = '- List' or '* List' on 1 or < lines
         return "unordered list"
-    if markdown.startswith("1. "): # Ordered list = '1. List entry one' and or '2. List entry two' and so on.
-        lines = markdown.split("\n")
-        i = 1
-        for line in lines:
-            if not line.startswith(f"{i}. "):
-                return "paragraph"
-            i += 1
+    if not re.findall(r"^(?!\d).", markdown, flags=re.MULTILINE):
         return "ordered list"
+
+    #if markdown.startswith("1. "): # Ordered list = '1. List entry one' and or '2. List entry two' and so on.
+    #    lines = markdown.split("\n")
+    #    i = 1
+    #    for line in lines:
+    #        if not line.startswith(f"{i}. "):
+    #            return "paragraph"
+    #        i += 1
+    #    return "ordered list"
     else:
         return "paragraph" # Paragraph = 'Anything that is not the above examples.'
     

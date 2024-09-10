@@ -7,10 +7,6 @@ class TestMarkdownToHTML(unittest.TestCase):
 # Heading 1
 ### Heading 3 with *emphasis*
 ###### Heading 6
-
-* Item 1 is **bold**
-* Item 2 is *italic*
-* Item 3 is `code`
 """
 
         node = markdown_to_html_node(md)
@@ -23,21 +19,34 @@ class TestMarkdownToHTML(unittest.TestCase):
         )
     """
 
-
-
-
-    def test_markdown_block_to_html_node(self):
-        md ="""
-# GitHub
-
-It's a **great** website where you can effectively manage *version control*. Check out the website here [github.com](https://github.com/)
-![bootdev](https://www.boot.dev/img/bootdev-logo-full-small.webp)
-    """ 
-    
+    def test_markdown_to_html_node_unordered_list(self): # 3 cases: generic, inline md, max heading length
+        md = """
+* UL Item 1 is **bold**
+* UL Item 2 is *italic*
+* UL Item 3 is `code`
+"""
         node = markdown_to_html_node(md)
     """
         self.assertEqual(
             node.to_html(),
-            "<p>It's a <b>great</b> website where you can effectively manage <i>version control</i></p>",
+            "<tag>content</tag>",
+            "<tag>content</tag>",
+            "<tag>content</tag>",
+        )
+    """
+
+    def test_markdown_to_html_node_ordered_list(self): # 3 cases: generic, inline md, max heading length
+        md = """
+1. OL Item 1 is **bold**
+2. OL Item 2 is *italic*
+3. OL Item 3 is `code`
+"""
+        node = markdown_to_html_node(md)
+    """
+        self.assertEqual(
+            node.to_html(),
+            "<tag>content</tag>",
+            "<tag>content</tag>",
+            "<tag>content</tag>",
         )
     """

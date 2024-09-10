@@ -62,7 +62,6 @@ def process_unordered_list(block):
 
     # loop over each list line <li>
     for item in items:
-        
 
         item = item.lstrip("-* ")
         item = item.strip()
@@ -72,8 +71,8 @@ def process_unordered_list(block):
         inline_nodes = [] # object must be emptied upon next loop
         for node in textnodes: 
             inline_nodes.append(text_node_to_html_node(node)) # convert to and append each inline md leafnode to a list
-        
-        # step out of inline wrapping and back into <li> work                
+    
+        # step out of inline wrapping and back into <li>              
         ul_children = ParentNode("li", inline_nodes) # inject inline nodes into <li> container
         li_nodes.append(ul_children) # create list to hold <li> nodes
     
@@ -83,7 +82,37 @@ def process_unordered_list(block):
 
 # process ordered lists
 def process_ordered_list(block):
-    pass
+    lines = block.split("\n")
+    items = []
+    current_item = []
+    for line in lines:
+        stripped_line = line.strip()
+        if stripped_line.startswith("*") or stripped_line.startswith("-"):
+            if current_item: # empty list = "falsy", non-empty list = "truthy".
+                items.append('\n'.join(current_item))
+                current_item = []
+        current_item.append(line)
+    if current_item:
+        items.append('\n'.join(current_item))
+    
+    ul_children = [] # object must be reset each time loop is run
+    li_nodes = [] # object must be reset each time loop is run
+    for item in items:
+        split_items = item.split(".")
+        item_text = split_items[1]
+        print(f"\nsplit_items:{split_items}")
+        input("pause")
+        item_text = item_text.strip()
+        textnodes = text_to_textnodes(item_text)
+
+        inline_nodes = []
+        for node in textnodes: 
+            inline_nodes.append(text_node_to_html_node(node))  
+        ul_children = ParentNode("li", inline_nodes)
+        li_nodes.append(ul_children)
+    
+    ul_node = ParentNode("ol", li_nodes)
+    return ul_node
 
 # process quote blocks
 def process_quote(block):
@@ -123,14 +152,12 @@ def process_paragraph(block):
 # call appropriate block processor for each type
 def block_processor(block, block_type):
     if block_type == block_type_heading:
-        html_node = process_heading(block)
-        return html_node
+        return process_heading(block)
     if block_type == block_type_unordered_list:
-        html_node = process_unordered_list(block)
-        return html_node
+        return process_unordered_list(block)
     if block_type == block_type_ordered_list:
-        #process_ordered_list(block)
-        pass
+        return process_ordered_list(block)
+        
     if block_type == block_type_quote:
         #process_quote(block)
         pass

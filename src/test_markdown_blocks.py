@@ -160,6 +160,7 @@ This is the same paragraph on a new line
         md = "1. This Is An\n2. Ordered List With\n3. Incrementally Numbered Lines."
         block_type = block_to_block_type(md)
         self.assertEqual(block_type, "ordered list")
+        print(block_type)
 
     def test_blocktype_ordered_list_triple_line_no_increment(self):
         md = "1. This Is An\nOrdered List With\nNo Incrementally Numbered Lines."
