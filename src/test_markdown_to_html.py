@@ -10,43 +10,41 @@ class TestMarkdownToHTML(unittest.TestCase):
 """
 
         node = markdown_to_html_node(md)
-    """
         self.assertEqual(
             node.to_html(),
-            "<h1>Heading 1</h1>",
-            "<h3>Heading 3 with <b>emphasis</b></h3>",
-            "<h6>Heading 6</h6>",
-        )
-    """
+            "<div><h1>Heading 1</h1><h3>Heading 3 with <i>emphasis</i></h3><h6>Heading 6</h6></div>"
+            )
 
-    def test_markdown_to_html_node_unordered_list(self): # 3 cases: generic, inline md, max heading length
+    def test_markdown_to_html_node_unordered_list(self):
         md = """
-* UL Item 1 is **bold**
-* UL Item 2 is *italic*
-* UL Item 3 is `code`
+* Item 1 is **bold**
+* Item 2 is *italic*
+* Item 3 is `code`
 """
         node = markdown_to_html_node(md)
-    """
         self.assertEqual(
-            node.to_html(),
-            "<tag>content</tag>",
-            "<tag>content</tag>",
-            "<tag>content</tag>",
-        )
-    """
+            node.to_html(), 
+            "<div><ul><li>Item 1 is <b>bold</b></li><li>Item 2 is <i>italic</i></li><li>Item 3 is <code>code</code></li></ul></div>"
+            )
 
-    def test_markdown_to_html_node_ordered_list(self): # 3 cases: generic, inline md, max heading length
+    def test_markdown_to_html_node_ordered_list(self):
         md = """
-1. OL Item 1 is **bold**
-2. OL Item 2 is *italic*
-3. OL Item 3 is `code`
+1. Item 1 is **important**
+2. Item 2 is *special*
+3. Item 3 is `unique`
 """
         node = markdown_to_html_node(md)
-    """
         self.assertEqual(
-            node.to_html(),
-            "<tag>content</tag>",
-            "<tag>content</tag>",
-            "<tag>content</tag>",
-        )
-    """
+            node.to_html(), 
+            "<div><ol><li>Item 1 is <b>important</b></li><li>Item 2 is <i>special</i></li><li>Item 3 is <code>unique</code></li></ol></div>"
+            )
+
+    def test_markdown_to_html_node_quote(self):
+        md = """
+>This is a quote
+"""
+        node = markdown_to_html_node(md)
+        self.assertEqual(
+            node.to_html(), 
+            "<div><blockquote>This is a quote</blockquote></div>"
+            )

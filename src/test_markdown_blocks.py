@@ -13,7 +13,6 @@ This is the same paragraph on a new line
 * with items
 """
         test_markdown_result = markdown_to_blocks(test_markdown)
-        #print(test_markdown_result)
         self.assertEqual(
             test_markdown_result,
             [
@@ -56,7 +55,6 @@ This is the same paragraph on a new line
     def test_blocktype_heading(self):
         md = "# This Is a Heading"
         block_type = block_to_block_type(md)
-        #print(block_type)
         self.assertEqual(block_type, "heading")
     
     def test_blocktype_heading_excessive_chars(self):
@@ -160,7 +158,6 @@ This is the same paragraph on a new line
         md = "1. This Is An\n2. Ordered List With\n3. Incrementally Numbered Lines."
         block_type = block_to_block_type(md)
         self.assertEqual(block_type, "ordered list")
-        print(block_type)
 
     def test_blocktype_ordered_list_triple_line_no_increment(self):
         md = "1. This Is An\nOrdered List With\nNo Incrementally Numbered Lines."
@@ -174,5 +171,4 @@ This is the same paragraph on a new line
     def test_blocktype_paragraph(self):
         md = "This is **bolded** paragraph"
         block_type = block_to_block_type(md)
-        #print(block_type)
         self.assertEqual(block_type, "paragraph")
