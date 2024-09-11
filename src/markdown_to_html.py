@@ -99,8 +99,10 @@ def process_ordered_list(block):
     ul_children = []
     li_nodes = []
     for item in items:
-        item = item.strip()
-        textnodes = text_to_textnodes(item)
+        split_items = item.split(".")
+        item_text = split_items[1]
+        item_text = item_text.strip()
+        textnodes = text_to_textnodes(item_text)
         inline_nodes = []
         for node in textnodes: 
             inline_nodes.append(text_node_to_html_node(node))
