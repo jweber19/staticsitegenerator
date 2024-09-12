@@ -77,6 +77,11 @@ This is the same paragraph on a new line
         block_type = block_to_block_type(md)
         self.assertEqual(block_type, "code")
     
+    def test_blocktype_code_multiline(self):
+        md = "```This Is Code\nRight?\nPlease say yes```"
+        block_type = block_to_block_type(md)
+        self.assertEqual(block_type, "code")
+    
     def test_blocktype_code_no_char(self):
         md = "This Is Totally Code"
         block_type = block_to_block_type(md)

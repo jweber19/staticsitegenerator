@@ -20,22 +20,16 @@ def markdown_to_blocks(markdown):
                 temp_string = ""
     return blocks
 
-    """ 
-        if line != "":
-            temp_string += (f"{line}"'\n')
-        else:
-            if temp_string.strip():
-                blocks.append(temp_string.strip())
-                temp_string = ""
-    return blocks
-    """
 # takes a single block of markdown text as input and returns a string representing the type of block it is.
 # block types include: paragraph, heading, code, quote, unordered_list, ordered_list
 def block_to_block_type(markdown):
     if re.match(r"^#{1,6}\s(?! )(.*)", markdown): # Heading = '#(1-6) Heading Text'
         return "heading"
-    if re.match(r"^```(.*)```$", markdown): # Code = '```Code Text```'
-        return "code"
+    if re.search(r"^```", markdown):
+        if re.search(r"```$", markdown.split("\n")[-1]):
+            return "code"
+        else:
+            return "paragraph"
     if not re.findall(r"^(?!>).", markdown, flags=re.MULTILINE): # Quote = '>Quote Text'
         return "quote"
     if not re.findall(r"^(?![-*] ).", markdown, flags=re.MULTILINE): # Unordered List = '- List' or '* List' on 1 or < lines

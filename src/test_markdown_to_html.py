@@ -48,3 +48,28 @@ class TestMarkdownToHTML(unittest.TestCase):
             node.to_html(), 
             "<div><blockquote>This is a quote</blockquote></div>"
             )
+
+    def test_markdown_to_html_node_code_multiline(self):
+        md = """
+```This is code.
+This is a second line of code.
+This is a third line of code.```
+"""
+        node = markdown_to_html_node(md)
+        self.assertEqual(
+            node.to_html(), 
+            "<div><pre><code>This is code.\nThis is a second line of code.\nThis is a third line of code.</code></pre></div>"
+            )
+
+    def test_markdown_to_html_node_paragraph_multiline(self):
+        md = """
+This is a paragraph
+with multiple lines.
+
+This is another paragraph.
+"""
+        node = markdown_to_html_node(md)
+        self.assertEqual(
+            node.to_html(), 
+            "<div><p>This is a paragraph\nwith multiple lines.\nThis is another paragraph.</p></div>"
+            )

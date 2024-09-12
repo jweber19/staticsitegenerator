@@ -27,13 +27,6 @@ block_type_quote = "quote"
 block_type_image = "image"
 block_type_code = "code"
 
-# create block type delimiters
-heading = "#"
-unordered_list = "-* "
-ordered_list = "1234567890. "
-quote = ">"
-code = "```"
-
 # process heading blocks
 def process_heading(block):
     heading_count = len(block) - len(block.lstrip("#"))
@@ -96,7 +89,7 @@ def process_ordered_list(block):
         current_item.append(line)
     if current_item:
         items.append('\n'.join(current_item))
-    ul_children = []
+    ol_children = []
     li_nodes = []
     for item in items:
         split_items = item.split(".")
@@ -106,10 +99,10 @@ def process_ordered_list(block):
         inline_nodes = []
         for node in textnodes: 
             inline_nodes.append(text_node_to_html_node(node))
-        ul_children = ParentNode("li", inline_nodes)
-        li_nodes.append(ul_children)
-    ul_node = ParentNode("ol", li_nodes)
-    return ul_node
+        ol_children = ParentNode("li", inline_nodes)
+        li_nodes.append(ol_children)
+    ol_node = ParentNode("ol", li_nodes)
+    return ol_node
 
 # process quote blocks
 def process_quote(block):
@@ -138,7 +131,19 @@ def process_quote(block):
 
 # process code blocks
 def process_code(block):
-    pass
+    code_children = []
+    code_nodes = []
+    block = block.lstrip("```")
+    block = block.rstrip("```")
+    block = block.strip()
+    textnodes = text_to_textnodes(block)
+    inline_nodes = []
+    for node in textnodes: 
+        inline_nodes.append(text_node_to_html_node(node))
+    code_children = ParentNode("code", inline_nodes)
+    code_nodes.append(code_children)
+    pre_node = ParentNode("pre", code_nodes)
+    return pre_node
 
 # process paragraph blocks
 def process_paragraph(block):
@@ -154,13 +159,12 @@ def block_processor(block, block_type):
         return process_ordered_list(block)
     if block_type == block_type_quote:
         return process_quote(block)
-    #if block_type == block_type_code:
-    #    return process_code(block)
+    if block_type == block_type_code:
+        return process_code(block)
     #if block_type == block_type_paragraph:
     #    return process_paragraph(block)
     else:
         return ValueError("Error: unknown block type found in block processor")
-
 
 # main function
 def markdown_to_html_node(markdown):
