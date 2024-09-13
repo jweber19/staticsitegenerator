@@ -36,7 +36,6 @@ def block_to_block_type(markdown):
         return "unordered list"
     if not re.findall(r"^(?!\d).", markdown, flags=re.MULTILINE):
         return "ordered list"
-    
     else:
         return "paragraph" # Paragraph = 'Anything that is not the above examples.'
     

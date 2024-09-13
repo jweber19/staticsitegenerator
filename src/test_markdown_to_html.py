@@ -67,9 +67,40 @@ This is a paragraph
 with multiple lines.
 
 This is another paragraph.
+
+**This one is bold. I think.**
 """
         node = markdown_to_html_node(md)
         self.assertEqual(
-            node.to_html(), 
-            "<div><p>This is a paragraph\nwith multiple lines.\nThis is another paragraph.</p></div>"
+            node.to_html(),
+            "<div><p>This is a paragraph\nwith multiple lines.</p><p>This is another paragraph.</p><p><b>This one is bold. I think.</b></p></div>"
             )
+        
+
+    def test_comprehensive_markdown(self):
+        md ="""
+# Heading 1
+
+## Heading 2
+
+This is a paragraph with **bold** text.
+
+* List item 1
+* List item 2
+
+1. Ordered item 1
+2. Ordered item 2
+
+> This is a blockquote
+
+`This is inline code`
+
+```This is a code block```
+
+```    This is also a code block (4 spaces indented)```
+"""
+        node = markdown_to_html_node(md)
+        self.assertEqual(
+            node.to_html(),
+            "<div><h1>Heading 1</h1><h2>Heading 2</h2><p>This is a paragraph with <b>bold</b> text.</p><ul><li>List item 1</li><li>List item 2</li></ul><ol><li>Ordered item 1</li><li>Ordered item 2</li></ol><blockquote>This is a blockquote</blockquote><p><code>This is inline code</code></p><pre><code>This is a code block</code></pre><pre><code>This is also a code block (4 spaces indented)</code></pre></div>"
+        )

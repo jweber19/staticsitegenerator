@@ -147,7 +147,15 @@ def process_code(block):
 
 # process paragraph blocks
 def process_paragraph(block):
-    pass
+    paragraph_children = []
+    block = block.strip()
+    textnodes = text_to_textnodes(block)
+    inline_nodes = []
+    for node in textnodes:
+        inline_nodes.append(text_node_to_html_node(node))
+    paragraph_children = ParentNode("p", inline_nodes)
+    return paragraph_children
+
 
 # call appropriate block processor for each type
 def block_processor(block, block_type):
@@ -161,8 +169,8 @@ def block_processor(block, block_type):
         return process_quote(block)
     if block_type == block_type_code:
         return process_code(block)
-    #if block_type == block_type_paragraph:
-    #    return process_paragraph(block)
+    if block_type == block_type_paragraph:
+        return process_paragraph(block)
     else:
         return ValueError("Error: unknown block type found in block processor")
 
@@ -170,12 +178,10 @@ def block_processor(block, block_type):
 def markdown_to_html_node(markdown):
     html_nodes = []
     blocks = markdown_to_blocks(markdown)
-
     for block in blocks:
         block_type = block_to_block_type(block)
         html_node = block_processor(block, block_type)
         html_nodes.append(html_node)
-    
     root_node = ParentNode("div", html_nodes)
-    print(f"\n{root_node.to_html()}")
+    #print(f"\n{root_node.to_html()}")
     return root_node
