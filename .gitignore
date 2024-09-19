@@ -2,4 +2,4 @@ __pycache__/
 /.vscode
 /notes
 /public_backup
-/public
+public/
