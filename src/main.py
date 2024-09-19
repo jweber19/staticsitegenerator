@@ -1,7 +1,8 @@
-from textnode import TextNode
+from recursive_copy import recursive_copy
 
 def main():
-    node = TextNode("This is a text node", "text_type_bold", "https://www.boot.dev")
-    print(node)
+    source_path = "static"
+    dest_path = "public"
+    recursive_copy(source_path, dest_path)
     
 main()
