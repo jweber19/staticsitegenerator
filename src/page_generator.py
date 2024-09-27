@@ -2,36 +2,64 @@ import os
 from markdown_to_html import markdown_to_html_node
 from extract_title import extract_title
 
+######### inputs passed from main #############################################################
+# from_path = "content"                                                    # markdown content #
+# dest_path = "public"                                                        # output folder #
+# template_path = "template.html"                               # html template for generator #
+#                                                                                             #
+# from_path:           content                                                                #
+# from_path_folder:      /home/deck/github.com/jweber19/staticsitegenerator/content           #
+# from_path_file:        /home/deck/github.com/jweber19/staticsitegenerator/content/index.md  #
+# dest_path:           public                                                                 #
+# dest_path_folder:      /home/deck/github.com/jweber19/staticsitegenerator/public            #
+# dest_path_file:        /home/deck/github.com/jweber19/staticsitegenerator/public/index.html #
+# template_path:       template.html                                                          #
+# template_path_file:    /home/deck/github.com/jweber19/staticsitegenerator/template.html     #
+###############################################################################################
+
 def generate_page(from_path, dest_path, template_path):
     # setup paths and confirm existence
-    print(f"\nGenerating page from {from_path} to {dest_path} using {template_path}...")
-    current_directory = os.getcwd()
-    from_path_full = os.path.join(current_directory, from_path)
-    template_path_full = os.path.join(current_directory, template_path)
-    dest_path_full = os.path.join(current_directory, dest_path, "index.html")
-    dest_path_folder = os.path.join(current_directory, dest_path)
-    if os.path.exists(from_path_full):
-        print("From path found.")
+    #current_directory = os.getcwd()
+    from_path_file = os.path.join(os.getcwd(), from_path, "index.md")
+    from_path_folder = os.path.join(os.getcwd(), from_path)
+    dest_path_file = os.path.join(os.getcwd(), dest_path, "index.html")
+    dest_path_folder = os.path.join(os.getcwd(), dest_path)
+    template_path_file = os.path.join(os.getcwd(), template_path)
+
+    print(f"\nGenerating page from '/{from_path}' to '/{dest_path}' using '/{template_path}'...")
+    # check from path folder exists
+    if os.path.exists(from_path_folder):
+        print(f"'{from_path_folder}' found.")
     else:
-        raise Exception(f"Error. Missing '{from_path}'.")
-    if os.path.exists(dest_path_folder):
-        print("Destination path found.")
-    else:
-        print(f"'{dest_path}' does not exist. Creating folder...")
-        os.mkdir(template_path_full)
+        print(f"'{from_path_folder}' does not exist. Creating folder...") # if not, make folder
+        os.mkdir(from_path_folder)
+        print(f"Writing...'{from_path_folder}'")
         print("Done.")
-    if os.path.exists(template_path_full):
-        print("Template path found.")
+    # check from path file exists
+    if os.path.exists(from_path_file):
+        print(f"'{from_path_file}' found.")
     else:
-        raise Exception(f"Error. Missing '{template_path}'.")
+        raise Exception(f"Error. Missing '{from_path_file}'.") # if not raise exception
+    # check dest path folder exists
+    if os.path.exists(dest_path_folder):
+        print(f"'{dest_path_folder}' found.")
+    else:
+        print(f"'{dest_path_folder}' does not exist. Creating folder...") # if not, make folder
+        os.mkdir(dest_path_folder)
+        print(f"Writing...'{dest_path_folder}'")
+        print("Done.")
+    # check template file exists
+    if os.path.exists(template_path_file):
+        print(f"'{template_path_file}' found.")
+    else:
+        raise Exception(f"Error. Missing '{template_path_file}'.") # if not raise exception
 
     # gather necessary files for html generation
     print("\nReading data...")
-    with open(from_path_full, 'r') as f:
-        markdown = f.read()
-    with open(template_path_full, 'r') as f:
-        print("Success.")
-        template_html = f.read()
+    with open(from_path_file, 'r') as f:
+        markdown = f.read() # load the markdown file into memory
+    with open(template_path_file, 'r') as f:
+        template_html = f.read() # load the template html into memory
     print("Converting Markdown to HTML..")
     node = markdown_to_html_node(markdown)
     print("Success.")
@@ -48,7 +76,7 @@ def generate_page(from_path, dest_path, template_path):
     output_html = output_html.replace("{{ Content }}", generated_html)
     print("Done.")
     print("Writing to file...")
-    with open(dest_path_full, 'w') as f:
+    with open(dest_path_file, 'w') as f:
         f.write(output_html)
         print("Finished.")
     print("Operation completed.")
