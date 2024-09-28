@@ -4,8 +4,6 @@ import os, shutil
 def recursive_folder_copy(source_path, dest_path):
     files = os.listdir(source_path)
     for file in files:
-        source_content_path = ""
-        dest_content_path = ""
         source_content_path = os.path.join(source_path, file)
         dest_content_path = os.path.join(dest_path, file)
         if os.path.isfile(source_content_path):
