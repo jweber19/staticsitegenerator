@@ -1,12 +1,4 @@
-"""
-    Converts raw markdown strings into lists of TextNode objects. 
-    This is known as a "markdown parser". Normally, parsing nested markdown strings is supported but this project 
-    will focus on single level nesting for simplicity's sake.
-
-"""
-
 import re
-
 from textnode import (
     TextNode,
     text_type_text,
@@ -25,7 +17,6 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         if old_node.text_type != text_type_text:
             new_nodes.append(old_node)
             continue
-        
         split_nodes = []
         parts = old_node.text.split(delimiter) # splits the text elem in the 1st old_node 
         if len(parts) % 2 == 0: # checks for odd split count = no delim match
