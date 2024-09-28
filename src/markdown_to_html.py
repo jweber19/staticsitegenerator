@@ -50,29 +50,21 @@ def process_unordered_list(block):
         current_item.append(line)
     if current_item:
         items.append('\n'.join(current_item))
-
-    
     li_nodes = [] # object must be reset each time loop is run
     ul_children = [] # object must be reset each time loop is run
-
     # loop over each list line <li>
     for item in items:
-
-        item = item.lstrip("-* ")
+        item = item[1:] # bug with previous .strip() solution
         item = item.strip()
         textnodes = text_to_textnodes(item) # get text type
-        
         # loop over any inline md
         inline_nodes = [] # object must be emptied upon next loop
         for node in textnodes: 
             inline_nodes.append(text_node_to_html_node(node)) # convert to and append each inline md leafnode to a list
-    
         # step out of inline wrapping and back into <li>              
         ul_children = ParentNode("li", inline_nodes) # inject inline nodes into <li> container
         li_nodes.append(ul_children) # create list to hold <li> nodes
-    
     ul_node = ParentNode("ul", li_nodes) # inject li nodes into ul node parent container
-    
     return ul_node
 
 # process ordered lists
